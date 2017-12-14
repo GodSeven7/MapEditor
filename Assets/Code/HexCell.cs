@@ -28,6 +28,11 @@ public static class HexDirectionExtensions
 [System.Serializable]
 public struct HexCoordinates
 {
+    public const int GridWidth = 3;
+    public const int GridHeight = 3;
+    public const int CellWidth = 10;
+    public const int CellHeight = 10;
+
     public const int Coefficient = 1000;
 
     [SerializeField]
@@ -134,6 +139,15 @@ public class HexCell : MonoBehaviour {
 
     [SerializeField]
     HexCell[] neighbors = new HexCell[6];
+
+
+    public int Number
+    {
+        get { return number; }
+        set { number = value; }
+    }
+
+    int number;
 
     public int Elevation
     {

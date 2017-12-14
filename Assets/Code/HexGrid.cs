@@ -5,18 +5,21 @@ using UnityEngine.UI;
 
 public class HexGrid : MonoBehaviour
 {
-    public GameObject childPrefab;
+    public HexCell childPrefab;
     public Text textPrefab;
     public int width = 10;
     public int height = 10;
     Dictionary<int, HexCell> childCells;
     Dictionary<int, Text> childTexts;
     Canvas gridCanvas;
+
+    [HideInInspector]
     public HexCoordinates curTouch;
+
+    [HideInInspector]
     public HexCell curHexCell;
 
-    // Use this for initialization
-    void Start()
+    public void Init(int index)
     {
         if (childPrefab == null)
             return;
@@ -32,6 +35,11 @@ public class HexGrid : MonoBehaviour
                 AddCell(i, j);
             }
         }
+    }
+
+    // Use this for initialization
+    void Start()
+    {
         
     }
 
@@ -105,11 +113,11 @@ public class HexGrid : MonoBehaviour
         pos.y = 0;
         pos.z = HexCellConf.outerRadius / 2 * 3 * j;
 
-        GameObject go = GameObject.Instantiate(childPrefab);
-        go.transform.SetParent(this.transform);
-        go.transform.localPosition = pos;
-        HexCell hc = go.GetComponent<HexCell>();
+        HexCell hc = GameObject.Instantiate<HexCell>(childPrefab);
+        hc.gameObject.transform.SetParent(this.transform);
+        hc.gameObject.transform.localPosition = pos;
         hc.coordinates = HexCoordinates.FromOffsetCoordinates(i, j);
+        hc.Number = key;
         childCells[key] = hc;
 
         SetCellNeighbor(hc, HexDirection.Left);
@@ -154,5 +162,10 @@ public class HexGrid : MonoBehaviour
             uiPosition.z = height * -HexCellConf.elevationStep;
             text.rectTransform.localPosition = uiPosition;
         }
+    }
+
+    public HexCell GetCell(int index)
+    {
+        return childCells[index];
     }
 }

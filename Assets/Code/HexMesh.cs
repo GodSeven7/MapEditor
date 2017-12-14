@@ -9,7 +9,6 @@ public enum HexEdgeType
 
 public static class HexCellConf
 {
-
     public static Color color = Color.magenta;
     public const float outerRadius = 5f;
     public const float innerRadius = outerRadius * 0.866025404f;
