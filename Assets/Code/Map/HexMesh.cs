@@ -126,11 +126,9 @@ public class HexMesh : MonoBehaviour
     List<int> triangles = new List<int>();
     List<Color> colors = new List<Color>();
 
-    public Color defaultColor = Color.white;
-    public Color touchedColor = Color.magenta;
-    public Color color = Color.white;
-
     HexCell hexCell;
+    
+    public bool isDirty;
 
     void Awake()
     {
@@ -143,7 +141,7 @@ public class HexMesh : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        SetDirty();
     }
 
     // Update is called once per frame
@@ -155,24 +153,28 @@ public class HexMesh : MonoBehaviour
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void Render()
     {
-        hexMesh.Clear();
-        vertices.Clear();
-        triangles.Clear();
-        colors.Clear();
+        if(this.isDirty)
+        {
+            hexMesh.Clear();
+            vertices.Clear();
+            triangles.Clear();
+            colors.Clear();
 
-        CaculateGrahpic();
+            CaculateGrahpic();
 
-        hexMesh.vertices = vertices.ToArray();
-        hexMesh.triangles = triangles.ToArray();
-        hexMesh.colors = colors.ToArray();
-        hexMesh.RecalculateNormals();
+            hexMesh.vertices = vertices.ToArray();
+            hexMesh.triangles = triangles.ToArray();
+            hexMesh.colors = colors.ToArray();
+            hexMesh.RecalculateNormals();
 
-        meshCollider.sharedMesh = hexMesh;
+            meshCollider.sharedMesh = hexMesh;
+        }
     }
 
     void CaculateGrahpic()
     {
-        for(int i = 0; i < 6; i++)
+        this.isDirty = false;
+        for (int i = 0; i < 6; i++)
         {
             Triangulate((HexDirection)i);
         }
@@ -200,7 +202,7 @@ public class HexMesh : MonoBehaviour
         v2 = center + HexCellConf.GetSecondSolidCorner(direction);
         AddTriangle(center, v1, v2);
 
-        c1 = color;
+        c1 = hexCell.color;
         AddTriangleColor(c1);
     }
 
@@ -214,7 +216,7 @@ public class HexMesh : MonoBehaviour
             Vector3 v4 = v2 + bridge;
             v3.y = v4.y = neigbor_middle.Elevation * HexCellConf.elevationStep;
 
-            Color c2 = neigbor_middle.GetHexMesh().color;
+            Color c2 = neigbor_middle.color;
 
             if (hexCell.GetEdgeType(direction) == HexEdgeType.Slope)
             {
@@ -242,20 +244,20 @@ public class HexMesh : MonoBehaviour
 
             if (hexCell.GetEdgeType(direction) == HexEdgeType.Slope)
             {
-                TriangulateCornerTerracesCliff(v5, neigbor_next.GetHexMesh().color, neigbor_next, v2, c1, hexCell, v4, c2, neigbor_middle);
+                TriangulateCornerTerracesCliff(v5, neigbor_next.color, neigbor_next, v2, c1, hexCell, v4, c2, neigbor_middle);
             }
             else if(hexCell.GetEdgeType(direction.Next()) == HexEdgeType.Slope)
             {
-                TriangulateCornerTerracesCliff(v4, c2, neigbor_middle, v5, neigbor_next.GetHexMesh().color, neigbor_next, v2, c1, hexCell);
+                TriangulateCornerTerracesCliff(v4, c2, neigbor_middle, v5, neigbor_next.color, neigbor_next, v2, c1, hexCell);
             }
             else if(neigbor_next.GetEdgeType(direction.Previous()) == HexEdgeType.Slope)
             {
-                TriangulateCornerTerracesCliff(v2, c1, hexCell, v4, c2, neigbor_middle, v5, neigbor_next.GetHexMesh().color, neigbor_next);
+                TriangulateCornerTerracesCliff(v2, c1, hexCell, v4, c2, neigbor_middle, v5, neigbor_next.color, neigbor_next);
             }
             else
             {
                 AddTriangle(v4, v5, v2);
-                AddTriangleColor(c2, neigbor_next.GetHexMesh().color, c1);
+                AddTriangleColor(c2, neigbor_next.color, c1);
             }
         }
     }
@@ -445,7 +447,7 @@ public class HexMesh : MonoBehaviour
     {
         Vector3 lastLeft = beginLeft;
         Vector3 lastRight = beginRight;
-        Color lastColor = color;
+        Color lastColor = hexCell.color;
         for (int i = 1; i <= HexCellConf.terraceSteps; i++)
         {
             Vector3 v3 = HexCellConf.TerraceLerp(beginLeft, endLeft, i, HexCellConf.terracesPerSlope);
@@ -517,8 +519,8 @@ public class HexMesh : MonoBehaviour
         colors.Add(c4);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void ChangeColor()
+    public void SetDirty()
     {
-        color = HexCellConf.color;
+        this.isDirty = true;
     }
 }

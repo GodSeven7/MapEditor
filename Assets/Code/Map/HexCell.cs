@@ -28,11 +28,6 @@ public static class HexDirectionExtensions
 [System.Serializable]
 public struct HexCoordinates
 {
-    public const int GridWidth = 3;
-    public const int GridHeight = 3;
-    public const int CellWidth = 10;
-    public const int CellHeight = 10;
-
     public const int Coefficient = 1000;
 
     [SerializeField]
@@ -50,7 +45,7 @@ public struct HexCoordinates
     {
         get
         {
-            return 0;
+            return _y;
         }
     }
 
@@ -152,10 +147,16 @@ public class HexCell : MonoBehaviour {
     public int Elevation
     {
         get{ return elevation; }
-        set{ elevation = value; }
+        set
+        {
+            elevation = value;
+            SetDirty();
+        }
     }
 
     int elevation;
+    
+    public Color color = Color.white;
 
     void Awake()
     {
@@ -175,7 +176,8 @@ public class HexCell : MonoBehaviour {
     {
         if(hexMesh)
         {
-            hexMesh.ChangeColor();
+            color = HexCellConf.color;
+            SetDirty();
         }
     }
 
@@ -198,5 +200,21 @@ public class HexCell : MonoBehaviour {
     public HexEdgeType GetEdgeType(HexDirection direction)
     {
         return HexCellConf.GetEdgeType(elevation, neighbors[(int)direction].elevation);
+    }
+
+    void SetDirty()
+    {
+        hexMesh.SetDirty();
+
+        HexDirection direction = HexDirection.Left;
+        for (int i = 0; i < 6; i++)
+        {
+            HexCell hc = GetNeighbor(direction);
+            if (hc)
+            {
+                hc.GetHexMesh().SetDirty();
+            }
+            direction = direction.Next();
+        }
     }
 }

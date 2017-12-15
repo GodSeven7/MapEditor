@@ -19,7 +19,8 @@ public class HexGrid : MonoBehaviour
     [HideInInspector]
     public HexCell curHexCell;
 
-    public void Init(int index)
+    // Use this for initialization
+    void Start()
     {
         if (childPrefab == null)
             return;
@@ -35,12 +36,6 @@ public class HexGrid : MonoBehaviour
                 AddCell(i, j);
             }
         }
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
