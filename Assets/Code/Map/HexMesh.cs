@@ -7,9 +7,20 @@ public enum HexEdgeType
     Flat, Slope, Cliff
 }
 
+public enum TerrainType
+{
+    Grass, Mud, Sand, Snow, Stone
+}
+
 public static class HexCellConf
 {
+    public static Color color1 = new Color(1f, 0f, 0f);
+    public static Color color2 = new Color(0f, 1f, 0f);
+    public static Color color3 = new Color(0f, 0f, 1f);
     public static Color color = Color.magenta;
+    public static TerrainType terrainType = TerrainType.Grass;
+    public static int height = 0;
+
     public const float outerRadius = 5f;
     public const float innerRadius = outerRadius * 0.866025404f;
 
@@ -69,7 +80,7 @@ public static class HexCellConf
         int allStep = stepCount * 2 + 1;
         if (allStep == step) return end;
 
-        return begin + (end - begin) * step / allStep;
+        return begin + (end - begin) * (float)step / (float)allStep;
     }
 
     public static Vector3 TerraceLerp(Vector3 begin, Vector3 end, int step, int stepCount)
@@ -125,9 +136,10 @@ public class HexMesh : MonoBehaviour
     List<Vector3> vertices = new List<Vector3>();
     List<int> triangles = new List<int>();
     List<Color> colors = new List<Color>();
+    List<Vector3> terrains = new List<Vector3>();
 
     HexCell hexCell;
-    
+    Vector3 terrainTypeVector3 = Vector3.zero;
     public bool isDirty;
 
     void Awake()
@@ -159,12 +171,15 @@ public class HexMesh : MonoBehaviour
             vertices.Clear();
             triangles.Clear();
             colors.Clear();
+            terrains.Clear();
+            terrainTypeVector3 = Vector3.zero;
 
             CaculateGrahpic();
 
-            hexMesh.vertices = vertices.ToArray();
-            hexMesh.triangles = triangles.ToArray();
-            hexMesh.colors = colors.ToArray();
+            hexMesh.SetVertices(vertices);
+            hexMesh.SetTriangles(triangles, 0);
+            hexMesh.SetColors(colors);
+            hexMesh.SetUVs(2, terrains);
             hexMesh.RecalculateNormals();
 
             meshCollider.sharedMesh = hexMesh;
@@ -187,6 +202,7 @@ public class HexMesh : MonoBehaviour
         //Triangle
         Vector3 v1, v2;
         Color c1;
+        terrainTypeVector3.x = (int)hexCell.terrainType;
         InnerTriangle(direction, center, out v1, out v2, out c1);
 
         if (direction == HexDirection.Left || direction == HexDirection.LeftDown || direction == HexDirection.RightDown)
@@ -202,8 +218,9 @@ public class HexMesh : MonoBehaviour
         v2 = center + HexCellConf.GetSecondSolidCorner(direction);
         AddTriangle(center, v1, v2);
 
-        c1 = hexCell.color;
+        c1 = HexCellConf.color1;
         AddTriangleColor(c1);
+        AddTriangleTerrain(terrainTypeVector3);
     }
 
     void QuatBridge(HexDirection direction, Vector3 center, Vector3 v1, Vector3 v2, Color c1)
@@ -216,7 +233,8 @@ public class HexMesh : MonoBehaviour
             Vector3 v4 = v2 + bridge;
             v3.y = v4.y = neigbor_middle.Elevation * HexCellConf.elevationStep;
 
-            Color c2 = neigbor_middle.color;
+            terrainTypeVector3.y = (int)neigbor_middle.terrainType;
+            Color c2 = HexCellConf.color2;
 
             if (hexCell.GetEdgeType(direction) == HexEdgeType.Slope)
             {
@@ -242,22 +260,25 @@ public class HexMesh : MonoBehaviour
             Vector3 v5 = v2 + HexCellConf.GetBridge(direction.Next());
             v5.y = neigbor_next.Elevation * HexCellConf.elevationStep;
 
+            terrainTypeVector3.z = (int)neigbor_next.terrainType;
+            Color c3 = HexCellConf.color3;
             if (hexCell.GetEdgeType(direction) == HexEdgeType.Slope)
             {
-                TriangulateCornerTerracesCliff(v5, neigbor_next.color, neigbor_next, v2, c1, hexCell, v4, c2, neigbor_middle);
+                TriangulateCornerTerracesCliff(v5, c3, neigbor_next, v2, c1, hexCell, v4, c2, neigbor_middle);
             }
             else if(hexCell.GetEdgeType(direction.Next()) == HexEdgeType.Slope)
             {
-                TriangulateCornerTerracesCliff(v4, c2, neigbor_middle, v5, neigbor_next.color, neigbor_next, v2, c1, hexCell);
+                TriangulateCornerTerracesCliff(v4, c2, neigbor_middle, v5, c3, neigbor_next, v2, c1, hexCell);
             }
             else if(neigbor_next.GetEdgeType(direction.Previous()) == HexEdgeType.Slope)
             {
-                TriangulateCornerTerracesCliff(v2, c1, hexCell, v4, c2, neigbor_middle, v5, neigbor_next.color, neigbor_next);
+                TriangulateCornerTerracesCliff(v2, c1, hexCell, v4, c2, neigbor_middle, v5, c3, neigbor_next);
             }
             else
             {
                 AddTriangle(v4, v5, v2);
-                AddTriangleColor(c2, neigbor_next.color, c1);
+                AddTriangleColor(c2, c3, c1);
+                AddTriangleTerrain(terrainTypeVector3);
             }
         }
     }
@@ -286,6 +307,7 @@ public class HexMesh : MonoBehaviour
 
                         AddTriangle(lastPos, boundary, v3);
                         AddTriangleColor(lastColor, boundaryColor, c3);
+                        AddTriangleTerrain(terrainTypeVector3);
 
                         lastPos = v3;
                         lastColor = c3;
@@ -300,6 +322,7 @@ public class HexMesh : MonoBehaviour
 
                         AddTriangle(boundary, v3, lastPos);
                         AddTriangleColor(boundaryColor, c3, lastColor);
+                        AddTriangleTerrain(terrainTypeVector3);
 
                         lastPos = v3;
                         lastColor = c3;
@@ -320,6 +343,7 @@ public class HexMesh : MonoBehaviour
 
                         AddTriangle(boundary, lastPos, v3);
                         AddTriangleColor(boundaryColor, lastColor, c3);
+                        AddTriangleTerrain(terrainTypeVector3);
 
                         lastPos = v3;
                         lastColor = c3;
@@ -334,6 +358,7 @@ public class HexMesh : MonoBehaviour
 
                         AddTriangle(boundary, lastPos, v3);
                         AddTriangleColor(boundaryColor, lastColor, c3);
+                        AddTriangleTerrain(terrainTypeVector3);
 
                         lastPos = v3;
                         lastColor = c3;
@@ -350,6 +375,7 @@ public class HexMesh : MonoBehaviour
 
                     AddTriangle(first, boundary, third);
                     AddTriangleColor(firstColor, boundaryColor, thirdColor);
+                    AddTriangleTerrain(terrainTypeVector3);
 
                     Vector3 lastPos = third;
                     Color lastColor = thirdColor;
@@ -360,6 +386,7 @@ public class HexMesh : MonoBehaviour
 
                         AddTriangle(boundary, v3, lastPos);
                         AddTriangleColor(boundaryColor, c3, lastColor);
+                        AddTriangleTerrain(terrainTypeVector3);
 
                         lastPos = v3;
                         lastColor = c3;
@@ -373,6 +400,7 @@ public class HexMesh : MonoBehaviour
 
                     AddTriangle(first, second, boundary);
                     AddTriangleColor(firstColor, secondColor, boundaryColor);
+                    AddTriangleTerrain(terrainTypeVector3);
 
                     Vector3 lastPos = second;
                     Color lastColor = secondColor;
@@ -383,6 +411,7 @@ public class HexMesh : MonoBehaviour
 
                         AddTriangle(boundary, lastPos, v3);
                         AddTriangleColor(boundaryColor, lastColor, c3);
+                        AddTriangleTerrain(terrainTypeVector3);
 
                         lastPos = v3;
                         lastColor = c3;
@@ -423,11 +452,13 @@ public class HexMesh : MonoBehaviour
             {
                 AddTriangle(lastLeft, lastRight, end);
                 AddTriangleColor(lastLeftColor, lastRightColor, endColor);
+                AddTriangleTerrain(terrainTypeVector3);
             }
             else
             {
                 AddQuad(lastRight, lastLeft, v4, v3);
                 AddQuadColor(lastRightColor, lastLeftColor, c3, c2);
+                AddQuadTerrain(terrainTypeVector3);
             }
 
             lastLeft = v3;
@@ -441,13 +472,14 @@ public class HexMesh : MonoBehaviour
     {
         AddQuad(beginLeft, beginRight, endLeft, endRight);
         AddQuadColor(beginColor, endColor);
+        AddQuadTerrain(terrainTypeVector3);
     }
 
     void TriangulateEdgeTerracesQuat(Vector3 beginLeft, Vector3 beginRight, Color beginColor, Vector3 endLeft, Vector3 endRight, Color endColor)
     {
         Vector3 lastLeft = beginLeft;
         Vector3 lastRight = beginRight;
-        Color lastColor = hexCell.color;
+        Color lastColor = beginColor;
         for (int i = 1; i <= HexCellConf.terraceSteps; i++)
         {
             Vector3 v3 = HexCellConf.TerraceLerp(beginLeft, endLeft, i, HexCellConf.terracesPerSlope);
@@ -456,6 +488,7 @@ public class HexMesh : MonoBehaviour
 
             AddQuad(lastLeft, lastRight, v3, v4);
             AddQuadColor(lastColor, c2);
+            AddQuadTerrain(terrainTypeVector3);
 
             lastLeft = v3;
             lastRight = v4;
@@ -479,6 +512,13 @@ public class HexMesh : MonoBehaviour
         colors.Add(c1);
         colors.Add(c1);
         colors.Add(c1);
+    }
+
+    void AddTriangleTerrain(Vector3 v1)
+    {
+        terrains.Add(v1);
+        terrains.Add(v1);
+        terrains.Add(v1);
     }
 
     void AddTriangleColor(Color c1, Color c2, Color c3)
@@ -517,6 +557,14 @@ public class HexMesh : MonoBehaviour
         colors.Add(c2);
         colors.Add(c3);
         colors.Add(c4);
+    }
+
+    void AddQuadTerrain(Vector3 v1)
+    {
+        terrains.Add(v1);
+        terrains.Add(v1);
+        terrains.Add(v1);
+        terrains.Add(v1);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void SetDirty()

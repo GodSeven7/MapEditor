@@ -158,6 +158,8 @@ public class HexCell : MonoBehaviour {
     
     public Color color = Color.white;
 
+    public TerrainType terrainType = TerrainType.Grass;
+
     void Awake()
     {
         hexMesh = GetComponent<HexMesh>();
@@ -172,11 +174,12 @@ public class HexCell : MonoBehaviour {
 		
 	}
 
-    public void ChangeColor()
+    public void ChangeTerrainType()
     {
         if(hexMesh)
         {
-            color = HexCellConf.color;
+            //Elevation = HexCellConf.height;
+            terrainType = HexCellConf.terrainType;
             SetDirty();
         }
     }

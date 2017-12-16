@@ -67,7 +67,7 @@ public class HexGrid : MonoBehaviour
         HexCell hc;
         if(childCells.TryGetValue(key, out hc))
         {
-            hc.ChangeColor();
+            hc.ChangeTerrainType();
             curHexCell = hc;
         }
     }

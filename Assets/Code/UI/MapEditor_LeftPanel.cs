@@ -57,12 +57,18 @@ public class MapEditor_LeftPanel : MonoBehaviour {
         if (xInput && !string.IsNullOrEmpty(heightInput.text))
         {
             int height = int.Parse(heightInput.text);
+            HexCellConf.height = height;
             hexGrid.ChangeHeight(hexGrid.curTouch.X, hexGrid.curTouch.Z, height);
         }
         else
         {
             Debug.LogError("please input heightInput");
         }
+    }
+
+    public void OnChangeTerrainType(int index)
+    {
+        HexCellConf.terrainType = (TerrainType)index;
     }
 
     public void OnChangeYellowColor()
