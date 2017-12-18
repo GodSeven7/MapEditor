@@ -8,6 +8,7 @@ public class MapEditor_LeftPanel : MonoBehaviour {
     public InputField xInput;
     public InputField yInput;
     public InputField heightInput;
+    public InputField waterInput;
 
     void Awake()
     {
@@ -59,6 +60,19 @@ public class MapEditor_LeftPanel : MonoBehaviour {
             int height = int.Parse(heightInput.text);
             HexCellConf.height = height;
             hexGrid.ChangeHeight(hexGrid.curTouch.X, hexGrid.curTouch.Z, height);
+        }
+        else
+        {
+            Debug.LogError("please input heightInput");
+        }
+    }
+
+    public void OnWaterLevelClick()
+    {
+        if (xInput && !string.IsNullOrEmpty(waterInput.text))
+        {
+            float waterLevel = float.Parse(waterInput.text);
+            hexGrid.ChangeWaterLevel(hexGrid.curTouch.X, hexGrid.curTouch.Z, waterLevel);
         }
         else
         {

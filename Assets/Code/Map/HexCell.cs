@@ -130,7 +130,12 @@ public struct HexCoordinates
 public class HexCell : MonoBehaviour {
 
     public HexCoordinates coordinates;
+
+    public GameObject hexMeshGO;
     HexMesh hexMesh;
+
+    public GameObject hexWaterGO;
+    HexWater hexWater;
 
     [SerializeField]
     HexCell[] neighbors = new HexCell[6];
@@ -155,14 +160,27 @@ public class HexCell : MonoBehaviour {
     }
 
     int elevation;
-    
+
+    public float WaterLevel
+    {
+        get { return waterLevel; }
+        set {
+            waterLevel = value;
+            SetDirty();
+        }
+    }
+
+    float waterLevel = 0;
+
     public Color color = Color.white;
 
     public TerrainType terrainType = TerrainType.Grass;
 
     void Awake()
     {
-        hexMesh = GetComponent<HexMesh>();
+        hexMesh = hexMeshGO.GetComponent<HexMesh>();
+
+        hexWater = hexWaterGO.GetComponent<HexWater>();
     }
 
     // Use this for initialization
@@ -189,6 +207,11 @@ public class HexCell : MonoBehaviour {
         return hexMesh;
     }
 
+    public HexWater GetWaterMesh()
+    {
+        return hexWater;
+    }
+
     public HexCell GetNeighbor(HexDirection direction)
     {
         return neighbors[(int)direction];
@@ -205,9 +228,19 @@ public class HexCell : MonoBehaviour {
         return HexCellConf.GetEdgeType(elevation, neighbors[(int)direction].elevation);
     }
 
+    public bool IsUnderWater()
+    {
+        if(waterLevel > elevation)
+        {
+            return Mathf.Abs(waterLevel - elevation) > 0.01f;
+        }
+        return false;
+    }
+
     void SetDirty()
     {
         hexMesh.SetDirty();
+        hexWater.SetDirty();
 
         HexDirection direction = HexDirection.Left;
         for (int i = 0; i < 6; i++)
@@ -216,6 +249,7 @@ public class HexCell : MonoBehaviour {
             if (hc)
             {
                 hc.GetHexMesh().SetDirty();
+                hc.GetWaterMesh().SetDirty();
             }
             direction = direction.Next();
         }

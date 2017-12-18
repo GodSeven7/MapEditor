@@ -141,23 +141,36 @@ public class HexGrid : MonoBehaviour
         }
     }
 
-    public void ChangeHeight(int i, int j, int height)
+    public void ChangeHeight(int i, int j, int value)
     {
         int key = HexCoordinates.GetIndex(i, j);
         HexCell hc;
         if (childCells.TryGetValue(key, out hc))
         {
-            hc.Elevation = height;
+            hc.Elevation = value;
         }
 
         Text text;
         if (childTexts.TryGetValue(key, out text))
         {
             Vector3 uiPosition = text.rectTransform.localPosition;
-            uiPosition.z = height * -HexCellConf.elevationStep;
+            uiPosition.z = value * -HexCellConf.elevationStep;
             text.rectTransform.localPosition = uiPosition;
         }
     }
+
+
+    public void ChangeWaterLevel(int i, int j, float value)
+    {
+        int key = HexCoordinates.GetIndex(i, j);
+        HexCell hc;
+        if (childCells.TryGetValue(key, out hc))
+        {
+            hc.WaterLevel = value;
+        }
+    }
+    
+
 
     public HexCell GetCell(int index)
     {
