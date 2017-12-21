@@ -46,7 +46,7 @@ public class HexWater : MonoBehaviour
             triangles.Clear();
             colors.Clear();
 
-            if(hexCell.IsUnderWater())
+            if (hexCell.IsUnderWater())
             {
                 CaculateGrahpic();
             }
@@ -76,13 +76,10 @@ public class HexWater : MonoBehaviour
         //Triangle
         Vector3 v1, v2;
         Color c1;
+
         InnerTriangle(direction, center, out v1, out v2, out c1);
 
-        if (direction == HexDirection.Left || direction == HexDirection.LeftDown || direction == HexDirection.RightDown)
-        {
-            //Quat
-            QuatBridge(direction, center, v1, v2, c1);
-        }
+        QuatBridge(direction, center, v1, v2, c1);       
     }
 
     void InnerTriangle(HexDirection direction, Vector3 center, out Vector3 v1, out Vector3 v2, out Color c1)
@@ -107,13 +104,16 @@ public class HexWater : MonoBehaviour
             
             Color c2 = HexCellConf.color2;
 
-            if (hexCell.GetEdgeType(direction) == HexEdgeType.Slope)
+            if (direction == HexDirection.Left || direction == HexDirection.LeftDown || direction == HexDirection.RightDown || !neigbor_middle.IsUnderWater())
             {
-                TriangulateEdgeTerracesQuat(v1, v2, c1, v3, v4, c2);
-            }
-            else
-            {
-                TriangulateEdgeQuat(v1, v2, c1, v3, v4, c2);
+                if (hexCell.GetEdgeType(direction) == HexEdgeType.Slope)
+                {
+                    TriangulateEdgeTerracesQuat(v1, v2, c1, v3, v4, c2);
+                }
+                else
+                {
+                    TriangulateEdgeQuat(v1, v2, c1, v3, v4, c2);
+                }
             }
 
             //Bridge
@@ -123,11 +123,26 @@ public class HexWater : MonoBehaviour
 
     void ShareTriangle(HexDirection direction, HexCell neigbor_middle, Vector3 v2, Vector3 v4, Color c1, Color c2)
     {
-        if (direction == HexDirection.Left) return;
-
         HexCell neigbor_next = hexCell.GetNeighbor(direction.Next());
         if (neigbor_next != null)
         {
+            if (direction == HexDirection.LeftUp || direction == HexDirection.Left)
+            {
+                if (neigbor_next.IsUnderWater()) return;
+                if(direction == HexDirection.Left)
+                {
+                    if (neigbor_middle.IsUnderWater()) return;
+                }
+            }
+            if (direction == HexDirection.RightUp || direction == HexDirection.Right)
+            {
+                if (neigbor_middle.IsUnderWater()) return;
+                if (direction == HexDirection.Right)
+                {
+                    if (neigbor_next.IsUnderWater()) return;
+                }
+            }
+
             Vector3 v5 = v2 + HexCellConf.GetBridge(direction.Next());
             v5.y = neigbor_next.WaterLevel * HexCellConf.elevationStep;
             
