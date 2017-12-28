@@ -100,8 +100,13 @@ public class HexWater : MonoBehaviour
             Vector3 bridge = HexCellConf.GetBridge(direction);
             Vector3 v3 = v1 + bridge;
             Vector3 v4 = v2 + bridge;
-            v3.y = v4.y = neigbor_middle.WaterLevel * HexCellConf.elevationStep;
-            
+            float waterLevel = neigbor_middle.WaterLevel;
+            if (!neigbor_middle.IsUnderWater())
+            {
+                waterLevel = Mathf.Min(hexCell.WaterLevel, neigbor_middle.Elevation);
+            }
+            v3.y = v4.y = waterLevel * HexCellConf.elevationStep;
+
             Color c2 = HexCellConf.color2;
 
             if (direction == HexDirection.Left || direction == HexDirection.LeftDown || direction == HexDirection.RightDown || !neigbor_middle.IsUnderWater())
@@ -144,7 +149,12 @@ public class HexWater : MonoBehaviour
             }
 
             Vector3 v5 = v2 + HexCellConf.GetBridge(direction.Next());
-            v5.y = neigbor_next.WaterLevel * HexCellConf.elevationStep;
+            float waterLevel = neigbor_next.WaterLevel;
+            if (!neigbor_next.IsUnderWater())
+            {
+                waterLevel = Mathf.Min(hexCell.WaterLevel, neigbor_next.Elevation);
+            }
+            v5.y = waterLevel * HexCellConf.elevationStep;
             
             Color c3 = HexCellConf.color3;
             if (hexCell.GetEdgeType(direction) == HexEdgeType.Slope)

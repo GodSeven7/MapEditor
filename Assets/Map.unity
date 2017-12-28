@@ -2677,8 +2677,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   childPrefab: {fileID: 195680336}
   textPrefab: {fileID: 567845061}
-  width: 30
-  height: 30
+  width: 10
+  height: 10
   curTouch:
     _x: 0
     _y: 0
