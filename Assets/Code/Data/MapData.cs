@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CellData : ScriptableObject
+public struct CellData
 {
     public int x;
     public int y;
@@ -18,6 +18,5 @@ public class MapData : ScriptableObject
 {
     public int width;
     public int height;
-    public CellData[] cellData;
-    
+    public List<CellData> cellDatas;
 }

@@ -19,6 +19,9 @@ public class HexGrid : MonoBehaviour
     [HideInInspector]
     public HexCell curHexCell;
 
+    private MapData mapData;
+    private CellData[,] cellDatas = new CellData[0, 0];
+
     // Use this for initialization
     void Start()
     {
@@ -28,6 +31,8 @@ public class HexGrid : MonoBehaviour
         gridCanvas = GetComponentInChildren<Canvas>();
         childCells = new Dictionary<int, HexCell>();
         childTexts = new Dictionary<int, Text>();
+
+        MapConfigSetup();
 
         for (int j = 0; j < height; j++)
         {
@@ -119,13 +124,27 @@ public class HexGrid : MonoBehaviour
         SetCellNeighbor(hc, HexDirection.LeftDown);
         SetCellNeighbor(hc, HexDirection.RightDown);
 
-        if (childTexts.ContainsKey(key)) return hc;
+        if (i < cellDatas.GetLength(0) && j < cellDatas.GetLength(1))
+        {
+            CellData cd = cellDatas[i, j];
+            hc.terrainType = cd.terrainType;
+            hc.Elevation = cd.elevation;
+            hc.WaterLevel = cd.waterLevel;
+        }
 
-        Text text = GameObject.Instantiate<Text>(textPrefab);
-        text.rectTransform.SetParent(gridCanvas.transform, false);
-        text.rectTransform.anchoredPosition = new Vector2(pos.x, pos.z);
-        text.text = string.Format("{0},{1}", i, j);
-        childTexts[key] = text;
+        if (!childTexts.ContainsKey(key))
+        {
+            Text text = GameObject.Instantiate<Text>(textPrefab);
+            text.rectTransform.SetParent(gridCanvas.transform, false);
+            text.rectTransform.anchoredPosition = new Vector2(pos.x, pos.z);
+            text.text = string.Format("{0},{1}", i, j);
+
+            Vector3 uiPosition = text.rectTransform.localPosition;
+            uiPosition.z = hc.Elevation * -HexCellConf.elevationStep;
+            text.rectTransform.localPosition = uiPosition;
+
+            childTexts[key] = text;
+        }
 
         return hc;
     }
@@ -170,10 +189,24 @@ public class HexGrid : MonoBehaviour
         }
     }
     
-
-
     public HexCell GetCell(int index)
     {
         return childCells[index];
+    }
+
+    public void MapConfigSetup()
+    {
+        string path = string.Format("MapData/{0}", "map4");
+        mapData = Resources.Load<MapData>(path);
+        if (mapData)
+        {
+            width = mapData.width;
+            height = mapData.height;
+            cellDatas = new CellData[width,height];
+            foreach (CellData cell in mapData.cellDatas)
+            {
+                cellDatas[cell.x, cell.y] = cell;
+            }
+        }
     }
 }

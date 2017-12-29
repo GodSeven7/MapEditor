@@ -19,18 +19,17 @@ public static class SaveMapData
             HexCell[] results = hexGrid.transform.GetComponentsInChildren<HexCell>();
             if (results.Length > 0)
             {
-                mapData.cellData = new CellData[results.Length];
-                int index = 0;
+                mapData.cellDatas = new List<CellData>(mapData.width* mapData.height);
                 foreach (HexCell hexCell in results)
                 {
-                    CellData cellData = ScriptableObject.CreateInstance<CellData>();
+                    CellData cellData = new CellData();//.CreateInstance<CellData>();
                     cellData.x = hexCell.coordinates.X;
                     cellData.y = hexCell.coordinates.Z;
                     cellData.waterLevel = hexCell.WaterLevel;
                     cellData.elevation = hexCell.Elevation;
+                    cellData.terrainType = hexCell.terrainType;
 
-                    mapData.cellData[index] = cellData;
-                    ++index;
+                    mapData.cellDatas.Add(cellData);
                 }
             }
 
@@ -43,12 +42,6 @@ public static class SaveMapData
             
             AssetDatabase.CreateAsset(mapData, path);
 #endif
-
-            MapData a =AssetDatabase.LoadAssetAtPath<MapData>(path);
-            foreach (CellData cell in a.cellData)
-            {
-                Debug.Log(string.Format("x = {0}, y = {1}, evevation = {2}, water = {3}", cell.x, cell.y, cell.elevation, cell.waterLevel));
-            }
 
         }
     }
