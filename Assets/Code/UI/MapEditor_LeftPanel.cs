@@ -50,7 +50,7 @@ public class MapEditor_LeftPanel : MonoBehaviour {
 
     public void OnSaveButtonClick()
     {
-
+        SaveMapData.SaveCurrentMapData();
     }
 
     public void OnChangeHeightClick()
