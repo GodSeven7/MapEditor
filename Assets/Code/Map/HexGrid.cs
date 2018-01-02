@@ -12,6 +12,7 @@ public class HexGrid : MonoBehaviour
     Dictionary<int, HexCell> childCells;
     Dictionary<int, Text> childTexts;
     Canvas gridCanvas;
+    public Transform environmentTransform;
 
     [HideInInspector]
     public HexCoordinates curTouch;
@@ -206,6 +207,18 @@ public class HexGrid : MonoBehaviour
             foreach (CellData cell in mapData.cellDatas)
             {
                 cellDatas[cell.x, cell.y] = cell;
+            }
+
+            if (environmentTransform)
+            {
+                foreach (MapObj obj in mapData.mapObjs)
+                {
+                    GameObject prefab = Resources.Load<GameObject>(obj.prefabName);
+                    GameObject go = GameObject.Instantiate(prefab, environmentTransform);
+                    go.transform.localPosition = obj.transform.position;
+                    go.transform.localScale = obj.transform.scale;
+                    go.transform.localRotation = obj.transform.rotation;
+                }
             }
         }
     }

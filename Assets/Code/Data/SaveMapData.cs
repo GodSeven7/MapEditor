@@ -16,13 +16,14 @@ public static class SaveMapData
             mapData.width = hexGrid.width;
             mapData.height = hexGrid.height;
 
+            //analysis cell data
             HexCell[] results = hexGrid.transform.GetComponentsInChildren<HexCell>();
             if (results.Length > 0)
             {
                 mapData.cellDatas = new List<CellData>(mapData.width* mapData.height);
                 foreach (HexCell hexCell in results)
                 {
-                    CellData cellData = new CellData();//.CreateInstance<CellData>();
+                    CellData cellData = new CellData();
                     cellData.x = hexCell.coordinates.X;
                     cellData.y = hexCell.coordinates.Z;
                     cellData.waterLevel = hexCell.WaterLevel;
@@ -30,6 +31,27 @@ public static class SaveMapData
                     cellData.terrainType = hexCell.terrainType;
 
                     mapData.cellDatas.Add(cellData);
+                }
+            }
+
+            //analysis environment
+            Transform env = go.transform.Find("Environment");
+            int count = env.childCount;
+            if (count > 0)
+            {
+                mapData.mapObjs = new List<MapObj>(count);
+                for (int i = 0; i < count; i++)
+                {
+                    Transform child = env.GetChild(i);
+                    MapObj mapObj = new MapObj();
+                    mapObj.prefabName = "Prefabs/Tree01";
+                    SimpleTransform simpleTransform = new SimpleTransform();
+                    simpleTransform.position = child.localPosition;
+                    simpleTransform.scale = child.localScale;
+                    simpleTransform.rotation = child.localRotation;
+                    mapObj.transform = simpleTransform;
+
+                    mapData.mapObjs.Add(mapObj);
                 }
             }
 

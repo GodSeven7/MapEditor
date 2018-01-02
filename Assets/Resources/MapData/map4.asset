@@ -1,0 +1,547 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90610c66267702540b62620e884c1a54, type: 3}
+  m_Name: map4
+  m_EditorClassIdentifier: 
+  width: 10
+  height: 10
+  cellDatas:
+  - x: 0
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 3
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 0
+  - x: 4
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 0
+  - x: 5
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 0
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 1
+    elevation: 0
+    waterLevel: 2
+    terrainType: 0
+  - x: 3
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 0
+  - x: 4
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 5
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 1
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 2
+    elevation: 3
+    waterLevel: 0
+    terrainType: 0
+  - x: 3
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 0
+  - x: 4
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 0
+  - x: 5
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 2
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 3
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 4
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 5
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 3
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 3
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 4
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 5
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 4
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 3
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 4
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 5
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 5
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 3
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 4
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 5
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 6
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 3
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 4
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 5
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 7
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 3
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 4
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 5
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 8
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 0
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 1
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 2
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 3
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 4
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 5
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 6
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 7
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 8
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  - x: 9
+    y: 9
+    elevation: 0
+    waterLevel: 0
+    terrainType: 2
+  mapObjs:
+  - prefabName: Prefabs/Tree01
+    transform:
+      position: {x: 19.049553, y: 3, z: 15.096089}
+      scale: {x: 3, y: 3, z: 3}
+      rotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  - prefabName: Prefabs/Tree01
+    transform:
+      position: {x: 20.701479, y: 0, z: 6.485844}
+      scale: {x: 3, y: 3, z: 3}
+      rotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  - prefabName: Prefabs/Tree01
+    transform:
+      position: {x: 31.813383, y: 0, z: 13.783447}
+      scale: {x: 3, y: 3, z: 3}
+      rotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  - prefabName: Prefabs/Tree01
+    transform:
+      position: {x: 28.089445, y: 0, z: 14.145283}
+      scale: {x: 3, y: 3, z: 3}
+      rotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  - prefabName: Prefabs/Tree01
+    transform:
+      position: {x: 33.421722, y: 0, z: 7.908025}
+      scale: {x: 3, y: 3, z: 3}
+      rotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  - prefabName: Prefabs/Tree01
+    transform:
+      position: {x: 30.1546, y: 0, z: 2.5227132}
+      scale: {x: 3, y: 3, z: 3}
+      rotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
