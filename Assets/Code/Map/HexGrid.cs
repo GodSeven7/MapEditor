@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class HexGrid : MonoBehaviour
 {
@@ -63,8 +64,23 @@ public class HexGrid : MonoBehaviour
         }
     }
 
+    bool Click ()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray, out hitInfo) && !EventSystem.current.IsPointerOverGameObject())
+        {
+            return true;
+        }
+        return false;
+    }
+
     void TouchCell(Vector3 position)
     {
+
+        if( !Click())
+            return;
+            
         curHexCell = null;
         position = transform.InverseTransformPoint(position);
         curTouch = HexCoordinates.FromPosition(position);
