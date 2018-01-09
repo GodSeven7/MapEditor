@@ -70,8 +70,7 @@ public class HexGrid : MonoBehaviour
 
         if(EventSystem.current.IsPointerOverGameObject())
             return;
-
-        curHexCell = null;
+        
         position = transform.InverseTransformPoint(position);
         curTouch = HexCoordinates.FromPosition(position);
 
@@ -80,7 +79,12 @@ public class HexGrid : MonoBehaviour
         if(childCells.TryGetValue(key, out hc))
         {
             hc.ChangeTerrainType();
+            if (curHexCell)
+            {
+                curHexCell.SetSelect(false);
+            }
             curHexCell = hc;
+            curHexCell.SetSelect(true);
         }
     }
 

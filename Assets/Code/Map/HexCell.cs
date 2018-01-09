@@ -202,6 +202,14 @@ public class HexCell : MonoBehaviour {
         }
     }
 
+    public void SetSelect(bool bValue)
+    {
+        if (hexMesh)
+        {
+            hexMesh.ShowBorder(bValue);
+        }
+    }
+
     public HexMesh GetHexMesh()
     {
         return hexMesh;
