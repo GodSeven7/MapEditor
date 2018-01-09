@@ -192,6 +192,11 @@ public class HexCell : MonoBehaviour {
 		
 	}
 
+    void OnDestroy()
+    {
+        SetDirty();
+    }
+
     public void ChangeTerrainType()
     {
         if(hexMesh)
