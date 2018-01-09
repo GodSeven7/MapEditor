@@ -6,7 +6,7 @@ Shader "Custom/WireFrame"
     {
     	_LineColor ("Line Color", Color) = (1,1,1,1)
     	_GridColor ("Grid Color", Color) = (1,1,1,0)
-    	_LineWidth ("Line Width", float) = 0.2
+    	_LineWidth ("Line Width", float) = 0.1
     }
     SubShader
     {
@@ -44,6 +44,7 @@ Shader "Custom/WireFrame"
 		    {
 			    v2f o;
 			    o.pos = UnityObjectToClipPos( v.vertex);
+				o.pos.y = o.pos.y - 0.01;
 			    o.texcoord1 = v.texcoord1;
 			    o.color = v.color;
 			    return o;
