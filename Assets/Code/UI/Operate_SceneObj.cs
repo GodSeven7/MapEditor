@@ -6,6 +6,7 @@ using UnityEngine;
 public class Operate_SceneObj : MonoBehaviour
 {
     private bool isFinish = false;
+    private bool isInNormalArea = false;
 
 	// Use this for initialization
 	void Start () {
@@ -17,17 +18,27 @@ public class Operate_SceneObj : MonoBehaviour
 	{
 	    if (isFinish)
 	        return;
-        
+
 	    Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 	    RaycastHit hit;
-	    if (Physics.Raycast(inputRay, out hit))
-	    {
-	        this.transform.position = hit.point;
-	    }
-
-	    if (Input.GetMouseButtonDown(0))
+        bool bInArea = Physics.Raycast(inputRay, out hit);
+        if (bInArea)
+        {
+            this.transform.position = hit.point;
+        }
+        if (Input.GetMouseButtonDown(0))
 	    {
 	        isFinish = true;
+            isInNormalArea = bInArea;
 	    }
+    }
+
+    public bool IsInNormalArea()
+    {
+        return isInNormalArea;
+    }
+    public bool IsFinish()
+    {
+        return isFinish;
     }
 }
